@@ -15,3 +15,32 @@ code {
 .brand-logo {
   margin-left: 10px;
 }
+
+form {
+  padding: 10px;
+  margin: 20px 10px 0
+}
+.notelist {
+  padding: 10px;
+  /* margin-top: 20px; */
+  width: 80vw;
+}
+#list {
+  display: 'grid'; 
+  grid-template-rows: 'auto';
+  grid-template-columns: 'auto auto auto auto auto';
+  gap:' 5px';
+  grid-auto-rows: 'auto';
+}
+
+.note {
+  background-image: url('notebook.jpg');
+  background-position-x: 50%;
+  background-size: 152%;
+}
+
+.section form {
+  background-color: lightblue;
+}
+
+
