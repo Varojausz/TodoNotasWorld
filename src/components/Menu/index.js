@@ -8,7 +8,8 @@ import Toggle_icon from '!svg-react-loader?name=Icon!./../../assets/images/Toggl
 import { ReactComponent as House } from './../../assets/images/House.svg'; 
 import { ReactComponent as Toggle_icon } from './../../assets/images/Toggle_icon.svg'; 
 
-import { useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { signOut } from '../../store/actions/authActions'
 
 
 const isActive = (history, path) => {
@@ -18,21 +19,12 @@ const isActive = (history, path) => {
       return '#ffffff'
   }
 
-const Menu = withRouter(({history}) => {
+const Menu = withRouter(({history, uid, signOut}) => {
         const lol = "rgb(255, 64, 129)" 
         const [toggle, setToggle] = useState(false);
 
-        const uid = useSelector((state) => {
-            return state.firebase.auth.uid
-        })
-        console.log(uid)
-        const dispatch = useDispatch()
         const handleSignOut = () => {
-            auth.signOut()
-            .then(() => {
-                console.log('Logged Out succesfully')
-                dispatch({type: 'SIGN_OUT'})
-            })  
+            signOut()
         }
         return (
             <MenuStyle>
@@ -89,4 +81,16 @@ const Menu = withRouter(({history}) => {
         )
     })
 
-export default Menu
+const mapStateToProps = state => {
+    return {
+        uid: state.firebase.auth.uid
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signOut: () => dispatch(signOut())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)

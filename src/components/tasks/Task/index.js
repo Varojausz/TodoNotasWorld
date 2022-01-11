@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import PropTypes from 'prop-types'
+/* import PropTypes from 'prop-types' */
 import {Link} from 'react-router-dom'
 /* import Comments from '../Comments' */
 
@@ -9,22 +9,33 @@ import { ReactComponent as Heart } from '../../../assets/images/Heart.svg';
 import { ReactComponent as Empty_heart } from '../../../assets/images/Empty_heart.svg'; 
 import { ReactComponent as Chat } from '../../../assets/images/Chat.svg'; 
 import {PostContainer, PostHeader, PostContent, PostActions, PostComments} from './styles'
-import { deleteTask, toggleFav } from '../../../store/actions/taskActions'
-import {useDispatch, useSelector} from 'react-redux'
+import {connect} from 'react-redux'
+import {removeTask, toggleFav} from '../../../store/actions/taskActions'
 import moment from 'moment'
 
-export default function Post ({task}){
-  const dispatch = useDispatch()
-  const deleteTaskHandler = () => {
-    dispatch(deleteTask(task))
+
+function Post ({task, removeTask, toggleFav, uid}){
+  const handleRemove = (task) => {
+    removeTask(task)
   }
   const toggleFavHandler = () => {
-      dispatch(toggleFav(task))
+      toggleFav(task)
   }
 
-  const uid = useSelector((state) => state.firebase.auth.uid ? state.firebase.auth.uid : 'not logged')
+  function toDateTime(secs) {
+    let t = new Date(secs * 1000)
+    return t;
+}
+
+
   const heartMarkup = task.favorite ? <Heart/> : <Empty_heart/>
-  const deleteMarkup = (task.authorId === uid || task.authorId === null || uid === 'CXzaSXQAyhMVvguGMPk0Kl1Usdd2 CXzaSXQAyhMVvguGMPk0Kl1Usdd2') ? <Bin onClick={deleteTaskHandler}/> : null
+  const deleteMarkup = (task.authorId === uid || task.authorId === 'Anónimo' || uid === 'CXzaSXQAyhMVvguGMPk0Kl1Usdd2') ? 
+  <button type="button">
+    <span className="label"><Bin onClick={() => handleRemove(task)}/></span>
+    <span className="root"></span>
+  </button>  : null 
+
+
 
 
   const photoURL = 'https://i.imgur.com/5H0KCsy.png'
@@ -53,18 +64,13 @@ export default function Post ({task}){
 
           <div className="content">
             <span className="title">
-              <Link>{task.name}</Link>
+              <Link>{task.userName}</Link>
             </span>
-            <span className="data">{moment(task.date.toDate()).fromNow()}</span>
+            <span className="data">{task.date.seconds ? moment(toDateTime(task.date.seconds).toDateString()).format('DD-MM-YYYY'): moment(task.date).format('DD-MM-YYYY')}</span>
           </div>
 
           <div className="action">
-            <button type="button">
-              <span className="label">
-                {deleteMarkup}
-              </span>
-              <span className="root"></span>
-            </button>
+            {deleteMarkup}
           </div>
 
         </PostHeader>
@@ -109,7 +115,22 @@ export default function Post ({task}){
   
 }
 
-Post.propTypes = {
+/* Post.propTypes = {
   post: PropTypes.object.isRequired,
   onRemove: PropTypes.func.isRequired
+} */
+
+const mapDispatchToProps = dispatch => {
+  return {
+    removeTask: (task) => dispatch(removeTask(task)),
+    toggleFav: (task) => dispatch(toggleFav(task))
+  }
 }
+const mapStateToProps = state => {
+  return {
+    uid: state.firebase.auth.uid
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post)

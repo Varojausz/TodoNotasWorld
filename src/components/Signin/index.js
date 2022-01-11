@@ -5,20 +5,20 @@ import {FormStyle, SectionFieldStyle, SectionSubmitStyle, InvalidSubmit} from '.
 import { ReactComponent as Exclamation } from '../../assets/images/Exclamation.svg'; 
 import InputWithLabel from '../InputWithLabel'
 import { auth } from '../../config/fbconfig'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import {signIn} from '../../store/actions/authActions'
 
 
-export default function Signin(props) {
-  const [values, setValues] = useState({
+function Signin(props) {
+  const [creds, setCreds] = useState({
     email: '',
     password: '',
-    error: '',
-    redirectToReferrer: false
+    name: '',
+    error: ''
   })
-  const dispatch = useDispatch()
 
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value })
+    setCreds({ ...creds, [name]: event.target.value })
   }
 /*   const handleChangeEmail = event => {
     setValues({ ...values, email: event.target.value })
@@ -27,36 +27,19 @@ export default function Signin(props) {
     setValues({ ...values, password: event.target.value })
   } */
 
-    function handleSubmit (e) {
-        e.preventDefault()
-        /* signIn(creds) */
-
-        auth.signInWithEmailAndPassword(values.email, values.password)
-        .then(() => {
-            console.log('Te has logeado de puta madre')
-            setValues({redirectToReferrer: true})
-            dispatch({type: "SIGN_IN", payload: {email: values.email, password: values.password}});
-            
-        })
-        .catch((err) => {
-            setValues({email: "", password: "", error: "User or password incorrect"})
-            dispatch({type: 'SIGN_IN_ERR'}, err)
-        })
-
-/*         localStorage.setItem('name', name)
-        resetName() */
-    }
+  function handleSubmit (e) {
+      e.preventDefault()
+      props.signIn(creds)
+  }
   const {from} = props.location.state || {
     from: {
       pathname: '/'
     }
   }
-  const {redirectToReferrer} = values
-  if (redirectToReferrer) {
+  if (props.uid) {
       return (<Redirect to={from}/>)
   }
 
-  console.log(values.error)
 
     return (
         <div>
@@ -64,18 +47,18 @@ export default function Signin(props) {
                 <SectionFieldStyle>
                     <h6>Sign In</h6>
                     <br/>
-                    <InputWithLabel value={values.email} id="email" label="Email" type="email" handleChange={handleChange('email')}>
+                    <InputWithLabel value={creds.email} id="email" label="Email" type="email" handleChange={handleChange('email')}>
                         Email
                     </InputWithLabel>
                     <br/>
-                    <InputWithLabel value={values.password} id="password" label="Password" type="password" handleChange={handleChange('password')}>
+                    <InputWithLabel value={creds.password} id="password" label="Password" type="password" handleChange={handleChange('password')}>
                         Password
                     </InputWithLabel>
                     <br/> 
-                    {values.error &&
+                    {creds.error &&
                       <InvalidSubmit>
                         <Exclamation/>
-                        {values.error}
+                        {creds.error}
                       </InvalidSubmit>
                     }
                 </SectionFieldStyle>
@@ -94,3 +77,18 @@ export default function Signin(props) {
         
     )
 }
+
+const mapStateToProps = state => {
+  console.log(state)
+  return {
+      uid: state.firebase.auth.uid
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    signIn: (creds) => dispatch(signIn(creds))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin)

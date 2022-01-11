@@ -9,9 +9,11 @@ import Empty_heart from '!svg-react-loader?name=Icon!./../../assets/images/Empty
 import Heart from '!svg-react-loader?name=Icon!./../../assets/images/Heart.svg'
 import Bin from '!svg-react-loader?name=Icon!./../../assets/images/Bin.svg'
 import {PostContainer, PostHeader, PostContent, PostActions, PostComments} from './styles'
+import {connect} from 'react-redux'
+import {compose} from 'redux'
+import { firestoreConnect } from 'react-redux-firebase'
 
-
-export default function Post (props){
+function Post (props){
 
   const jwt = auth.isAuthenticated()
   const checkLike = (likes) => {
@@ -28,7 +30,7 @@ export default function Post (props){
   //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
   // }, [])
 
-  
+  console.log(props)
 
   const clickLike = () => {
     let callApi = values.like ? unlike : like
@@ -136,3 +138,22 @@ export default function Post (props){
   post: PropTypes.object.isRequired,
   onRemove: PropTypes.func.isRequired
 } */
+
+const mapStateToProps = state => {
+  console.log(state)
+  const tasks = state.firestore.ordered.tasks;
+  return {
+    tasks: tasks,
+    uid: state.firebase.auth.uid
+  }
+}
+
+export default compose (
+  connect(mapStateToProps), firestoreConnect(ownProps => [
+    {
+      collection: "tasks",
+      where: ["authorId", "==", ownProps.uid],
+      orderBy: ["date", "desc"]
+    }
+  ])
+)(Post)

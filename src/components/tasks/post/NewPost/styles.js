@@ -235,14 +235,14 @@ export const FormSubmit = styled.section`
         letter-spacing: 0.02857em;
         text-transform: uppercase;
         margin: 16px;
-        cursor: ${props => !props.values.text ? 'default' : 'pointer'};
+        cursor: ${props => !props.values.content ? 'default' : 'pointer'};
         box-shadow: none;
-        background-color: ${props => !props.values.text ? 'rgba(0, 0, 0, 0.12)' : '#3f4771'};
-        color: ${props => !props.values.text ? 'rgba(0, 0, 0, 0.26)' : '#fff'};
+        background-color: ${props => !props.values.content ? 'rgba(0, 0, 0, 0.12)' : '#3f4771'};
+        color: ${props => !props.values.content ? 'rgba(0, 0, 0, 0.26)' : '#fff'};
 
         &:hover {
-            box-shadow: ${props => !props.values.text ? 'none' :' 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)'};
-            background-color: ${props => !props.values.text ? 'rgba(0, 0, 0, 0.12)' : '#2e355b'};
+            box-shadow: ${props => !props.values.content ? 'none' :' 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)'};
+            background-color: ${props => !props.values.content ? 'rgba(0, 0, 0, 0.12)' : '#2e355b'};
         }
 
 /*         span {

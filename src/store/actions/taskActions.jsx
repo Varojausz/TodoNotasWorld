@@ -2,16 +2,19 @@
 export const addTask = task => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
+        const authorId = getState().firebase.auth.uid;
+        console.log(getState())
         firestore.collection('tasks')
         .add({
             ...task,
             favorite: false,
-            date: new Date()
+            authorId: authorId!==undefined?authorId:'Anónimo',
+            date: new Date().toDateString()
         })
         .then(()=> {
             dispatch({
                 type: "ADD_TASK",
-                task
+                payload: task
             })
         })
         .catch((err) => {
@@ -22,30 +25,41 @@ export const addTask = task => {
         })
     }
 }
-export const deleteTask = task => {
+export const removeTask = task => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
         firestore.collection('tasks').doc(task.id).delete()
         .then(()=> {
-            console.log('Delete the task succesfully')
+            dispatch({
+                type: "REMOVE_TASK"
+            })
         })
         .catch((err) => {
-            console.log(err)
+            dispatch({
+                type: "REMOVE_TASK_ERR",
+                payload: err
+            })
         })
     }
 }
 export const toggleFav = task => {
     return (dispatch,getState, {getFirebase})=> {
-        const favstatus = !task.favorite
         const firestore = getFirebase().firestore()
+        const favstatus = !task.favorite
         firestore.collection('tasks').doc(task.id).update({
             favorite: favstatus
         })
         .then(()=> {
-            console.log('Toggle favorite succesfully')
+            dispatch({
+                type: "TOGGLE_FAV",
+                payload: favstatus
+            })
         })
         .catch((err) => {
-            console.log(err)
+            dispatch({
+                type: "TOGGLE_FAV_ERR",
+                payload: err
+            })
         })
     }
 }

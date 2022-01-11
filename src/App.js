@@ -9,6 +9,8 @@ import Navbar from './components/layout/Navbar'
 import {Layout} from './components/Layouts'
 import Menu from './components/Menu'
 import { ThemeProvider } from 'styled-components'
+import {ToastContainer} from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import Favorites from './components/tasks/Favorites'
 import TaskDetail from './components/tasks/TaskDetail'
@@ -20,7 +22,7 @@ function App() {
 
   return (
     <Router>
-
+    <ToastContainer/>
     <Layout headerHeight={"3rem"}>
       <Switch>
         <Route path="/signin" component={Signin}/>

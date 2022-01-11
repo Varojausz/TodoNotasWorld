@@ -5,23 +5,21 @@ import {FormStyle, SectionFieldStyle, SectionSubmitStyle, InvalidSubmit} from '.
 import { ReactComponent as Exclamation } from '../../assets/images/Exclamation.svg'; 
 import InputWithLabel from '../InputWithLabel'
 import { auth } from '../../config/fbconfig'
-import { useDispatch, useSelector } from 'react-redux'
-import {getFirebase} from 'react-redux-firebase'
+import { connect } from 'react-redux';
+import {signUp} from '../../store/actions/authActions'
+import {addUser} from '../../store/actions/userActions'
 
 
-export default function Signup(props) {
-  const [values, setValues] = useState({
+function Signup(props) {
+  const [creds, setCreds] = useState({
     email: '',
     password: '',
     error: '',
     name: '',
-    logged: '',
-    redirectToReferrer: false
   })
-  const dispatch = useDispatch()
 
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value })
+    setCreds({ ...creds, [name]: event.target.value, date: new Date() })
   }
 /*   const handleChangeEmail = event => {
     setValues({ ...values, email: event.target.value })
@@ -30,55 +28,20 @@ export default function Signup(props) {
     setValues({ ...values, password: event.target.value })
   } */
 
-    function handleSubmit (e) {
-        e.preventDefault()
-
-    auth.createUserWithEmailAndPassword(values.email, values.password)
-    .then(() => {
-        console.log('Te has logeado de puta madre')
-        setValues({...values, logged: true})   
-    })
-    .catch((err) => {
-      setValues({email: "", password: "", error: "User alredy exists"})
-    })
-/*         localStorage.setItem('name', name)
-        resetName() */
-    }
-    const uid = useSelector((state) => {
-      return state.firebase.auth.uid ? state.firebase.auth.uid : null
-    })
-
-    useEffect(() => {
-      console.log(values)
-      if(values.logged === true) {
-        const firestore = getFirebase().firestore()
-        firestore.collection('users')
-        .add({
-            name: values.name,
-            date: new Date(),
-            userId: uid
-        }).then(() => {
-          setValues({redirectToReferrer: true})
-          dispatch({type: "SIGN_UP", payload: {email: values.email, password: values.password, name: values.name, date: new Date(), userId: uid}});
-        })
-        .catch((err) => {
-          dispatch({type: 'SIGN_UP_ERR', payload: {error: err}})
-        })
-
-      }
-    },[values.logged])
+  function handleSubmit (e) {
+      e.preventDefault()
+      props.signUp(creds)
+      /* props.addUser(creds) */
+  }
 
   const {from} = props.location.state || {
     from: {
       pathname: '/'
     }
   }
-  const {redirectToReferrer} = values
-  if (redirectToReferrer) {
-      return (<Redirect to={from}/>)
-  }
-
-  console.log(values.error)
+  if (props.uid) {
+    return (<Redirect to={from}/>)
+}
 
     return (
         <div>
@@ -86,22 +49,22 @@ export default function Signup(props) {
                 <SectionFieldStyle>
                     <h6>Sign Up</h6>
                     <br/>
-                    <InputWithLabel value={values.name} id="name" label="Name" type="text" handleChange={handleChange('name')}>
+                    <InputWithLabel value={creds.name} id="name" label="Name" type="text" handleChange={handleChange('name')}>
                         Name
                     </InputWithLabel>
                     <br/>
-                    <InputWithLabel value={values.email} id="email" label="Email" type="email" handleChange={handleChange('email')}>
+                    <InputWithLabel value={creds.email} id="email" label="Email" type="email" handleChange={handleChange('email')}>
                         Email
                     </InputWithLabel>
                     <br/>
-                    <InputWithLabel value={values.password} id="password" label="Password" type="password" handleChange={handleChange('password')}>
+                    <InputWithLabel value={creds.password} id="password" label="Password" type="password" handleChange={handleChange('password')}>
                         Password
                     </InputWithLabel>
                     <br/> 
-                    {values.error &&
+                    {creds.error &&
                       <InvalidSubmit>
                         <Exclamation/>
-                        {values.error}
+                        {creds.error}
                       </InvalidSubmit>
                     }
                 </SectionFieldStyle>
@@ -120,3 +83,19 @@ export default function Signup(props) {
         
     )
 }
+
+const mapStateToProps = state => {
+  console.log(state)
+  return {
+      uid: state.firebase.auth.uid
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    signUp: (creds) => dispatch(signUp(creds)),
+    addUser: (creds) => dispatch(addUser(creds))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)

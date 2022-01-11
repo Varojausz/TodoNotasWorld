@@ -12,8 +12,18 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {getFirebase, ReactReduxFirebaseProvider} from 'react-redux-firebase'
 import { createFirestoreInstance } from 'redux-firestore';
+import {composeWithDevTools} from 'redux-devtools-extension'
+import { saveState, loadState } from './store/reducers/localStorage';
 
-const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument({getFirebase})))
+
+const persistedState = loadState();
+
+const store = createStore(rootReducer, persistedState, composeWithDevTools(applyMiddleware(thunk.withExtraArgument({getFirebase}))))
+
+store.subscribe(() => {
+  saveState(store.getState());
+});
+
 
 const rrfProps = {
   firebase,
@@ -23,12 +33,12 @@ const rrfProps = {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
+
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
         <App />
       </ReactReduxFirebaseProvider>
     </Provider>
-  </React.StrictMode>,
+,
   document.getElementById('root')
 );

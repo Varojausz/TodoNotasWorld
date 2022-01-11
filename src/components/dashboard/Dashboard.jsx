@@ -2,34 +2,31 @@ import React, {useState, useEffect} from 'react'
 /* import AddTask from '../tasks/AddTask' */
 import NewPost from '../tasks/post/NewPost'
 import LoggedNewPost from '../tasks/post/LoggedNewPost'
-import { useSelector } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { useFirestoreConnect, isLoaded } from 'react-redux-firebase'
 import TaskList from '../tasks/TaskList'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
 
 
-    const [usuario, setUsuario] = useState('')
+    const [values, setValues] = useState({})
 
     useFirestoreConnect({collection: 'tasks', orderBy:['date','desc']})
-    const tasks = useSelector(state => state.firestore.ordered.tasks)
-    /* console.log(tasks) */
-
-    const uid = useSelector((state) => {
-        return state.firebase.auth.uid ? state.firebase.auth.uid : null
-    })
+    useFirestoreConnect({collection: 'users', orderBy:['date','desc']})
+    useFirestoreConnect([{collection: 'users', where: ['userId','==',props.uid!==undefined?props.uid:'Anónimo'], storeAs: 'usuarioBuscado'}])
     
-    useFirestoreConnect([{collection: 'users', orderBy:['date','desc'], storeAs: 'users'}])
-    const users = useSelector(state => {
 
-/*         try {
-            localStorage.setItem('state', state.firestore.ordered.users)
-        } catch {
-            let user = localStorage.getItem('state')
-            return user
-        }   finally {
-            console.log(state)
-        } */
+    useEffect(() => {
+        const usuarioBuscado = props.usuarioBuscado!==null ? props.usuarioBuscado[sacarMierda(props.usuarioBuscado)] : {name: 'Anónimo'}
+        /* const usuarioBuscado = props.usuarioBuscado */
+        setValues({tasks: props.tasks, uid: props.uid, users: props.users, usuarioBuscado: usuarioBuscado})
+    },[])
+
+    
+    console.log('usuarioBuscado:', values.usuarioBuscado)
+    
+/*     useFirestoreConnect([{collection: 'users', orderBy:['date','desc'], storeAs: 'users'}])
+    const users = useSelector(state => {
 
         if (state.firestore.ordered.users!==undefined) {
             console.log('Creando instancia en localstorage', state.firestore.ordered.users[0].name)
@@ -61,25 +58,16 @@ const Dashboard = () => {
 
     useEffect(() => {
         setUsuario(users)
-    },[])
+    },[]) */
 
-    console.log(usuario)
-    
-
-/*     for(let i;i<user.length;i++){
-        console.log(i)
-        if(i===uid){
-            console.log(user)
-            return user
+    function sacarMierda(mierda) {
+        for(let i in mierda) {
+            return i
         }
-    } */
-
-
-
-
+    }
 
     return (
-        (!isLoaded(tasks))?(
+        (!isLoaded(values.tasks) || !isLoaded(values.users))?(
             <div className="text-center">
                 <div className="spinner-grow text-primary" style={{width: "7rem", height: "7rem"}} role="status">
                     <span className="sr-only">Loading...</span>
@@ -87,12 +75,23 @@ const Dashboard = () => {
             </div>
         ): (
         <div>
-            <NewPost usuario={usuario}/>
-            <div className="d-flex justify-content-center"><TaskList tasks={tasks}/></div>
+            <NewPost usuario={props.auth}/>
+            <div className=""><TaskList tasks={values.tasks}/></div>
         </div>
         )
 
     )
 }
 
-export default Dashboard
+const mapStateToProps = state => {
+    console.log(state)
+    return {
+        uid: state.firebase.auth.uid,
+        tasks: state.firestore.ordered.tasks,
+        users: state.firestore.ordered.tasks,
+        usuarioBuscado: state.firestore.data.usuarioBuscado,
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(Dashboard)
