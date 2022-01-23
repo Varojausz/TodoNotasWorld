@@ -4,12 +4,13 @@ export const addTask = task => {
         const firestore = getFirebase().firestore()
         const authorId = getState().firebase.auth.uid;
         console.log(getState())
+        console.log(task)
         firestore.collection('tasks')
         .add({
             ...task,
             favorite: false,
             authorId: authorId!==undefined?authorId:'Anónimo',
-            date: new Date().toDateString()
+            date: Date.now()
         })
         .then(()=> {
             dispatch({

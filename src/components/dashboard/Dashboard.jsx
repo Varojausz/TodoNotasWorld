@@ -13,17 +13,11 @@ const Dashboard = (props) => {
 
     useFirestoreConnect({collection: 'tasks', orderBy:['date','desc']})
     useFirestoreConnect({collection: 'users', orderBy:['date','desc']})
-    useFirestoreConnect([{collection: 'users', where: ['userId','==',props.uid!==undefined?props.uid:'Anónimo'], storeAs: 'usuarioBuscado'}])
-    
+    /* useFirestoreConnect({collection: 'users', where:['date','==','desc'], storeAs: 'usuarioBuscado'}) */
 
     useEffect(() => {
-        const usuarioBuscado = props.usuarioBuscado!==null ? props.usuarioBuscado[sacarMierda(props.usuarioBuscado)] : {name: 'Anónimo'}
-        /* const usuarioBuscado = props.usuarioBuscado */
-        setValues({tasks: props.tasks, uid: props.uid, users: props.users, usuarioBuscado: usuarioBuscado})
-    },[])
-
-    
-    console.log('usuarioBuscado:', values.usuarioBuscado)
+        setValues({tasks: props.tasks, users: props.users})
+    },[props.state])
     
 /*     useFirestoreConnect([{collection: 'users', orderBy:['date','desc'], storeAs: 'users'}])
     const users = useSelector(state => {
@@ -54,20 +48,11 @@ const Dashboard = (props) => {
             }
         }
     }
+ */
 
-
-    useEffect(() => {
-        setUsuario(users)
-    },[]) */
-
-    function sacarMierda(mierda) {
-        for(let i in mierda) {
-            return i
-        }
-    }
 
     return (
-        (!isLoaded(values.tasks) || !isLoaded(values.users))?(
+        (!isLoaded(props.state.firestore.ordered.tasks))?(
             <div className="text-center">
                 <div className="spinner-grow text-primary" style={{width: "7rem", height: "7rem"}} role="status">
                     <span className="sr-only">Loading...</span>
@@ -75,7 +60,7 @@ const Dashboard = (props) => {
             </div>
         ): (
         <div>
-            <NewPost usuario={props.auth}/>
+            <NewPost/>
             <div className=""><TaskList tasks={values.tasks}/></div>
         </div>
         )
@@ -86,11 +71,10 @@ const Dashboard = (props) => {
 const mapStateToProps = state => {
     console.log(state)
     return {
-        uid: state.firebase.auth.uid,
         tasks: state.firestore.ordered.tasks,
         users: state.firestore.ordered.tasks,
-        usuarioBuscado: state.firestore.data.usuarioBuscado,
-        auth: state.auth
+        auth: state.auth,
+        state: state
     }
 }
 

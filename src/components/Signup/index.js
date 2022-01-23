@@ -61,11 +61,19 @@ function Signup(props) {
                         Password
                     </InputWithLabel>
                     <br/> 
-                    {creds.error &&
+                    {props.auth.error2 && (
+                      <div>
                       <InvalidSubmit>
                         <Exclamation/>
-                        {creds.error}
+                        {props.auth.error}
                       </InvalidSubmit>
+                      <InvalidSubmit>
+                        <Exclamation/>
+                        {props.auth.error2}
+                      </InvalidSubmit>
+                      </div>
+                    )
+
                     }
                 </SectionFieldStyle>
 
@@ -87,7 +95,8 @@ function Signup(props) {
 const mapStateToProps = state => {
   console.log(state)
   return {
-      uid: state.firebase.auth.uid
+      uid: state.firebase.auth.uid,
+      auth: state.auth
   }
 }
 

@@ -1,3 +1,7 @@
+//import {deleteUser} from '../../config/fbconfig'
+import { getAuth, deleteUser } from "firebase/auth";
+import { doc, deleteDoc } from "firebase/firestore";
+
 function obtenerUsuario(item,uid){
     for(let user of item) {
         for(let field in user) {
@@ -11,6 +15,7 @@ function obtenerUsuario(item,uid){
     }
 }
 
+let user
 export const signIn = creds => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
@@ -20,13 +25,24 @@ export const signIn = creds => {
             console.log('hola?')
             const uid = getState().firebase.auth.uid
             const users = getState().firestore.ordered.users
-            const user = obtenerUsuario(users,uid)
-            creds.name = user.name
+            user = obtenerUsuario(users,uid)
+            creds = {...creds, name: user.name, id: user.id}
+            /* creds.name = user.name */
             console.log(creds)
+            console.log(user)
             dispatch({type: "SIGN_IN", payload: creds});
+        }).then(() => {
+            dispatch({
+                type: "ADD_USER",
+                payload: {...user}
+            })
         })
         .catch((err) => {
-            dispatch({type: 'SIGN_IN_ERR'}, err)
+        let errorMessage = err.message.replace('The email address is', 'Email or password are')
+            .replace('badly formatted. ', 'incorrect.')
+            .replace('Firebase: ', '')
+            .replace ('(auth/invalid-email).','')
+            dispatch({type: 'SIGN_IN_ERROR', payload: errorMessage})
         })
     }
 }
@@ -45,19 +61,24 @@ export const signUp = (creds) => {
             firestore.collection('users')
             .add({
                 ...creds,
+                photo: "",
                 userId: userId.user.uid,
                 date: new Date()
             })
-            .then(()=> {
+            .then((data)=> {
+                console.log(data)
                 creds.password = null
                 dispatch({
                     type: "ADD_USER",
-                    payload: {creds: creds, userId: userId.user.uid, date: new Date()}
+                    payload: {...creds, photo: "", userId: userId.user.uid, date: new Date(), id: data.id}
                 })
             })
         })
         .catch((err) => {
-            dispatch({type: 'SIGN_UP_ERR'}, err)
+            let errorMessage = err.message.replace("Firebase: The email address is badly formatted. (auth/invalid-email).", "Name and password must have at least 6 characters")
+            let errorMessage2 = "Email must contain a '@'character"
+
+            dispatch({type: 'SIGN_UP_ERROR', payload: {error: errorMessage, error2: errorMessage2}})
         })
     }
 }
@@ -70,5 +91,36 @@ export const signOut = () => {
             console.log('adios :D')
             dispatch({type: "SIGN_OUT"});
         })
+    }
+}
+
+
+
+export const deleteUserAction = (id) => {
+    return (dispatch, getState, {getFirebase}) => {
+        const firebase = getFirebase();
+        console.log('a ver picha', id)
+
+
+        let user = firebase.auth().currentUser
+        console.log(user)
+        deleteUser(user)
+        .then((data) => {
+            console.log(data, 'El cual debería estar vacío')
+            dispatch({type: "DELETE"});
+            dispatch({type: "DELETE_USER"});
+        }).then(() => {
+            const firestore = firebase.firestore()
+            .collection("users").doc(id).delete()
+            .then(()=> {
+                dispatch({
+                    type: "SIGN_OUT"
+                })
+            })
+        })
+        .catch((err) => {
+            console.log('Error catched on deleteUser catch', err.message)
+        })
+
     }
 }

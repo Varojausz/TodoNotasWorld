@@ -22,10 +22,10 @@ function Post ({task, removeTask, toggleFav, uid}){
       toggleFav(task)
   }
 
-  function toDateTime(secs) {
+/*   function toDateTime(secs) {
     let t = new Date(secs * 1000)
     return t;
-}
+} */
 
 
   const heartMarkup = task.favorite ? <Heart/> : <Empty_heart/>
@@ -39,7 +39,7 @@ function Post ({task, removeTask, toggleFav, uid}){
 
 
   const photoURL = 'https://i.imgur.com/5H0KCsy.png'
-
+  console.log(task.data)
   
   // useEffect(() => {
   //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
@@ -66,7 +66,7 @@ function Post ({task, removeTask, toggleFav, uid}){
             <span className="title">
               <Link>{task.userName}</Link>
             </span>
-            <span className="data">{task.date.seconds ? moment(toDateTime(task.date.seconds).toDateString()).format('DD-MM-YYYY'): moment(task.date).format('DD-MM-YYYY')}</span>
+            <span className="data">{new Date(task.date).toLocaleString()}</span>
           </div>
 
           <div className="action">
@@ -77,9 +77,9 @@ function Post ({task, removeTask, toggleFav, uid}){
 
         <PostContent className="MuiCardContent-root makeStyles-cardContent-9">
           <p className="MuiTypography-root makeStyles-text-11 MuiTypography-body1">{task.content}</p>
-          {photoURL !=='https://i.imgur.com/5H0KCsy.png' &&
+          {task.data !=='https://i.imgur.com/5H0KCsy.png' &&
           <div className="makeStyles-photo-12">
-            <img className="makeStyles-media-13" src={photoURL}/>
+            <img className="makeStyles-media-13" src={task.data}/>
           </div>}
         </PostContent>
 

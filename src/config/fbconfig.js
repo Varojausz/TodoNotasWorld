@@ -15,6 +15,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.firestore();
 const auth = firebase.auth()
+export const deleteUser = firebase.deleteUser
+
 
 export {auth}
 export default firebase

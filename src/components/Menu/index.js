@@ -38,7 +38,7 @@ const Menu = withRouter(({history, uid, signOut}) => {
                         </MenuHomeStyle>
                     </Link>
                     <button className="ToggleButton" onClick={() => setToggle(!toggle)}><Toggle_icon/></button>
-                    <ToggleContent height={'48px'} toggle={toggle}>
+                    <ToggleContent toggle={toggle}>
                         <Link to="/favorites">
                             <MenuButtonStyle tabIndex={0} type="button" color={isActive(history, "/favorites")}>
                                 <span className="Button-label">Favorites</span>
@@ -48,8 +48,8 @@ const Menu = withRouter(({history, uid, signOut}) => {
                         {
                             uid ?  (
                                 <span>
-                                <Link to={"/user/" + uid}>
-                                    <MenuButtonStyle type="button" color={isActive(history, "/user/" + uid)}>
+                                <Link to={"/profile/"}>
+                                    <MenuButtonStyle type="button" color={isActive(history, "/profile/")}>
                                         <span className="Button-label">Profile</span>
                                         <span className="root" />
                                     </MenuButtonStyle>

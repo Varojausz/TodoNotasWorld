@@ -55,10 +55,10 @@ function Signin(props) {
                         Password
                     </InputWithLabel>
                     <br/> 
-                    {creds.error &&
+                    {props.auth.errorSignin &&
                       <InvalidSubmit>
                         <Exclamation/>
-                        {creds.error}
+                        {props.auth.errorSignin}
                       </InvalidSubmit>
                     }
                 </SectionFieldStyle>
@@ -81,6 +81,7 @@ function Signin(props) {
 const mapStateToProps = state => {
   console.log(state)
   return {
+      auth: state.auth,
       uid: state.firebase.auth.uid
   }
 }

@@ -173,13 +173,12 @@ export const MenuButtonStyle = styled.button`
         user-select: none;
         -webkit-tap-highlight-color: transparent;
         font-size: 0.875rem;
-
         font-weight: 500;
         line-height: 1.75;
         letter-spacing: 0.02857em;
         text-transform: uppercase;
         color: ${props => props.color};
-        width: 100%;
+        height: 3rem;
         display: inherit;
         align-items: inherit;
         justify-content: inherit;
@@ -207,19 +206,30 @@ export const ToggleContent = styled.section`
     position: relative;
     display: flex;
     
-    
+    a {
+        height: 3rem;
+    }
+
+    span {
+        height: 3rem;
+    }
 
     @media screen and (max-width: 700px) {
         position: absolute;
         box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
         display: ${(props) => props.toggle ? 'flex' : 'none'};
         flex-direction: column;
+        flex-grow: 1;
         top: ${(props) => props.headerHeight || '3rem'};
         right: 0vw;
         width: 90px;
         
         a, span, button {
             width: 90px;
+            border-radius: 0;
+        }
+        a {
+            height: 3rem;
         }
 
         a:hover, button:hover {

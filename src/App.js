@@ -16,6 +16,8 @@ import Favorites from './components/tasks/Favorites'
 import TaskDetail from './components/tasks/TaskDetail'
 import EditTask from './components/tasks/EditTask'
 import MisNotas from './components/tasks/MisNotas'
+import Profile from './components/Profile'
+import Edit from './components/Edit'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -31,6 +33,8 @@ function App() {
         <Route exact path="/favorites" component={Favorites}/>
         <Route exact path="/misnotas" component={MisNotas}/>
         <Route exact path="/task/:id" component={TaskDetail}/>
+        <Route exact path="/profile" component={Profile}/>
+        <Route exact path="/edit" component={Edit}/>
         <Route exact path="/edittask/:id" component={EditTask}/>
       </Switch>
     </Layout>

@@ -29,7 +29,7 @@ const rrfProps = {
   firebase,
   config: {},
   dispatch: store.dispatch,
-  createFirestoreInstance
+  createFirestoreInstance,
 }
 
 ReactDOM.render(
