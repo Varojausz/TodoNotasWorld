@@ -26,9 +26,7 @@ export const editUser = user => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
         firestore.collection('users').doc(user.id)
-        .set({
-            ...user
-        })
+        .set(user)
         .then(()=> {
             dispatch({
                 type: "EDIT_USER",
