@@ -44,6 +44,10 @@ ul {
 export const SectionFieldStyle = styled.section`
     text-align: center;
     padding: 16px;
+    display: ${props => props.display};
+    justify: ${props => props.justify};
+    flex-direction: ${props => props.direction};
+    align-items: center;
 
         h6 {
             text-align: center;
@@ -131,6 +135,7 @@ export const Tabs = styled.div`
                 position: absolute;
                 border-bottom: 2px solid #3f4771;
                 pointer-events: none;
+                
             }
     }
 `
@@ -138,16 +143,93 @@ export const Tabs = styled.div`
 export const HeaderAvatar = styled.div`
 
 color: rgba(0, 0, 0, 0.87);
+display: ${props => props.display};
+justify-content: ${props => props.justify};
 flex: 0 0 auto;
-margin-right: 16px;
 list-style: none;
 text-align: left;
 flex-shrink: 0;
-width: 80px;
-height: 80px;
+width: 240px;
+height: 100%;
+margin-right: ${props => props.margin[1]};
 
 .circular {
     color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    overflow: hidden;
+    text-align: left;
+    position: relative;
+    font-size: 1.25rem;
+    align-items: center;
+    flex-shrink: 0;
+    line-height: 1;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    width: 240px;
+    height: 240px;
+    margin: 10px;
+    margin-right: ${props => props.margin[1]};
+    cursor: pointer;
+
+    svg {
+        display: ${props => props.hover ? 'flex' : 'none'};
+        z-index: 10;
+    }
+
+    div {
+    font-size: 1.25rem;
+    line-height: 1;
+    user-select: none;
+    color: transparent;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    text-align: center;
+    text-align: center;
+    background: url(${props => props.image});
+    }   
+
+    &:before {
+        left: 0;
+        right: 0;
+        top: 0;
+        content: "";
+        position: absolute;
+        background-color: rgba(63, 71, 113, 0.4);
+        transition: height 200ms cubic-bezier(0.0, 0, 0.2, 1);
+        height: ${props => props.hover ? '40%' : '0'};
+        z-index: 10;
+        
+    }
+
+    &:hover::before {
+        height: ${props => props.hover ? '40%' : '0'};
+    }
+    &:hover::after {
+        height: ${props => props.hover ? '40%' : '0'};
+    }
+
+    &:after {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: "";
+        position: absolute;
+        background-color: rgba(63, 71, 113, 0.4);
+        transition: height 200ms cubic-bezier(0.0, 0, 0.2, 1);
+        height: ${props => props.hover ? '40%' : '0'};
+        
+    }
+}   
+
+
+
+`
+export const Circular = styled.div`
+    color: rgba(0, 0, 0, 0.87);
+    margin-right: ${props => props.margin[1]};
     display: flex;
     overflow: hidden;
     text-align: left;
@@ -164,33 +246,31 @@ height: 80px;
     margin: 10px;
 
     img {
-    font-size: 1.25rem;
-    line-height: 1;
-    user-select: none;
-    color: transparent;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    text-align: center;
-    text-align: center;
-    }   
-}   
-
-
-
+        font-size: 1.25rem;
+        line-height: 1;
+        user-select: none;
+        color: transparent;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        text-align: center;
+        text-align: center;
+    }  
 `
 
 export const HeaderProfile = styled.div`
-    width: 100%;
+    width: ${props => props.width};
+    height: ${props => props.height};
     display: flex;
     position: relative;
     text-align: left;
     align-items: center;
-    justify-content: flex-start;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 16px;
-    padding-right: 16px;
+    justify-content: ${props => props.justify};
+    margin-right: ${props => props.margin[1]}
+    padding-top: ${props => props.padding[0] || '4px'};
+    padding-bottom: ${props => props.padding[1] || '4px'};
+    padding-left: ${props => props.padding[2] || '16px'};
+    padding-right: ${props => props.padding[3] || '16px'};
 
 `
 export const HeaderContent = styled.div`

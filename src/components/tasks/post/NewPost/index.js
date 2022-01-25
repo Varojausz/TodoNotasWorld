@@ -24,7 +24,7 @@ function NewPost ({props, addTask, uid, usuario, task}){
     error: '',
     userName: usuario.name? usuario.name : 'Anónimo',
     request: false,
-    data: {}
+    data: ''
   })
   const inputRef = useRef()
 

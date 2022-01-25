@@ -40,6 +40,7 @@ function Post ({task, removeTask, toggleFav, uid}){
 
   const photoURL = 'https://i.imgur.com/5H0KCsy.png'
   console.log(task.data)
+  console.log(task.data !=='')
   
   // useEffect(() => {
   //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
@@ -77,7 +78,7 @@ function Post ({task, removeTask, toggleFav, uid}){
 
         <PostContent className="MuiCardContent-root makeStyles-cardContent-9">
           <p className="MuiTypography-root makeStyles-text-11 MuiTypography-body1">{task.content}</p>
-          {task.data !=='https://i.imgur.com/5H0KCsy.png' &&
+          {task.data !=='' &&
           <div className="makeStyles-photo-12">
             <img className="makeStyles-media-13" src={task.data}/>
           </div>}

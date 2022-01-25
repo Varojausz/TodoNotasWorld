@@ -17,7 +17,28 @@ export const addUser = user => {
         .catch((err) => {
             dispatch({
                 type: "ADD_USER_ERR",
-                err
+                payload: err
+            })
+        })
+    }
+}
+export const editUser = user => {
+    return (dispatch,getState, {getFirebase})=> {
+        const firestore = getFirebase().firestore()
+        firestore.collection('users').doc(user.id)
+        .set({
+            ...user
+        })
+        .then(()=> {
+            dispatch({
+                type: "EDIT_USER",
+                payload: user
+            })
+        })
+        .catch((err) => {
+            dispatch({
+                type: "EDIT_USER_ERR",
+                payload: err
             })
         })
     }

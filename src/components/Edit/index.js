@@ -1,87 +1,132 @@
-import React, {useState, useEffect} from 'react'
-/* import AddTask from '../tasks/AddTask' */
-import { connect, useSelector } from 'react-redux'
-import {Link} from 'react-router-dom'
-import { useFirestoreConnect, isLoaded } from 'react-redux-firebase'
-import TaskList from '../tasks/TaskList'
-import {ProfilePaper, HeaderAvatar, HeaderProfile, SectionFieldStyle, InvalidSubmit, SectionSubmitStyle,} from './styles'
+import React, {useState, useEffect, useRef} from 'react'
+import { connect } from 'react-redux'
+import {ProfilePaper, HeaderAvatar, HeaderProfile, SectionFieldStyle, Circular, InvalidSubmit, SectionSubmitStyle,} from './styles'
 import InputWithLabel from '../InputWithLabel'
-import { ReactComponent as Bin } from '../../assets/images/Bin.svg'; 
-import { ReactComponent as Edit } from '../../assets/images/Edit.svg'; 
+import useFocusHover from '../../assets/CustomHooks/useFocusHover'
 import { ReactComponent as Exclamation } from '../../assets/images/Exclamation.svg'; 
+import { ReactComponent as Camera } from '../../assets/images/camera.svg'; 
 import { deleteUserAction } from '../../store/actions/authActions'
+import { editUser } from '../../store/actions/userActions'
 
 
 
-const Profile = ({uid, tasks, usuario, task, state, deleteUserAction,id}) => {
+const Edit = ({uid, tasks, usuario, task, state, deleteUserAction,id, editUser}) => {
 
-    function obtenerTasks(tasks,uid){
-        let resultsArray = []
-        for(let task of tasks) {
-            if(task.authorId === uid) {
-                resultsArray.push(task)
-            }
-        }
-        return resultsArray
+    const inputRef = useRef()
+
+    const fetching = () => {
+      const formData = new FormData();
+      const imageFile = inputRef.current.files[0]
+      formData.append('image', imageFile);
+      formData.append('album', 'ShBFecvIzWtNoIS');
+      console.log(images.image)
+    
+      fetch('https://api.imgur.com/3/image', {
+        //mode: 'cors',
+        method: 'POST',
+        headers: {
+          Authorization: 'Client-ID 9949aebac6be83c',
+        },
+        body: formData
+      }).then((data) => data.json()).then((data) => {
+        setUser({...user, data: data.data.link, request: true, id: state.user.id, email: user.email})
+      }) 
+      .catch(error => {
+        console.error(error);
+        //alert('Upload failed: ' + error);
+      });
     }
 
-    const handleChange = name => event => {
-        setCreds({ ...creds, [name]: event.target.value })
-    }
 
-    function handleSubmit (e) {
-        if(creds.oldPassword===state.auth.password) {
-            setCreds({...creds, error: ''})
-        } else {
-            setCreds({...creds, error: true})
-        }
-/*         e.preventDefault()
-        props.signIn(creds) */
-    }
-
-
-    const [creds, setCreds] = useState({
-        email: state.user.email,
+    const [user, setUser] = useState({
+        email: state.user.email ? state.user.email : '',
         password: '',
         oldPassword: '',
         name: state.user.name,
+        id: state.user.id ? state.user.id : '',
         error: ''
     })
 
+    const [images, setImages] = useState({
+        src: '',
+        image: '',
+        request: false
+    })
+
+    const handleChange = name => event => {
+        const value = event.target.value
+        setUser({...user, [name]: value })
+    
+        if(name==='photo') {
+          console.log(event.target)
+          console.log(URL.createObjectURL(event.target.files[0]))
+          setImages({
+            src: URL.createObjectURL(event.target.files[0]), image: event.target.files[0]
+          })
+        }
+        console.log(images.src)
+        
+      }
+
+    function handleSubmit (e) {
+        if(user.oldPassword===state.auth.password) {
+            setUser({...user, error: ''})
+            fetching()
+
+        } else {
+            setUser({...user, error: true})
+        }
+/*         e.preventDefault()
+        props.signIn(user) */
+    }
+
+
+
+    useEffect(() => {
+        if(user.request === true) {
+          setImages({...images, request: false})
+          editUser(user)
+        }
+      },[user.data])
+
+    const [focus, handleFocus, handleFocusOut, hover, handleHover, handleHoverOut] = useFocusHover();
+
     return (
         <ProfilePaper>
-            <SectionFieldStyle>
-            <ul>
-                <HeaderProfile>
-                    <HeaderAvatar>
-                        <div className='circular'>
-                            <img src={state.user.data} alt="" />
-                        </div>
+            <SectionFieldStyle display='flex' justify='center' direction='column'>
+
+                <HeaderProfile name='HeaderProfile' padding={['4','4','16','16']} height='240px' width='100%' justify='center' margin={['0','0','0','0']}>
+                    <HeaderAvatar name='HeaderAvatar' hover={hover} display='flex' justify='center' margin={['0','0','0','0']} onMouseLeave={handleHoverOut}>
+                    <input id="icon-button-file" onChange={handleChange('photo')} ref={inputRef} accept="image/*" className="makeStyles-input-38" id="icon-button-file" type="file"/>
+                        <label htmlFor="icon-button-file" className='circular' onMouseOver={handleHover} >
+                            <img onMouseOver={handleHover} style={{position: 'absolute', width: '100%', height: '100%'}} src={images.src ? images.src : state.user.data} alt=""/>
+                            <Camera onMouseOver={handleHover}/>
+                        </label>
                     </HeaderAvatar>
                 </HeaderProfile>
 
-            </ul>
+
                 <br/>
-                <InputWithLabel value={creds.email} id="email" label="Email" type="email" handleChange={handleChange('email')}>
+                <InputWithLabel value={user.email} id="email" label="Email" type="email" handleChange={handleChange('email')}>
                     New email
                 </InputWithLabel>
                 <br/>
-                <InputWithLabel value={creds.name} id="name" label="Name" type="text" handleChange={handleChange('name')}>
+                <InputWithLabel value={user.name} id="name" label="Name" type="text" handleChange={handleChange('name')}>
                     New name
                 </InputWithLabel>
                 <br />
-                <InputWithLabel value={creds.oldPassword} id="password" label="Password" type="password" handleChange={handleChange('oldPassword')}>
-                    Old Password
+                <InputWithLabel value={user.oldPassword} id="password" label="Password" type="password" handleChange={handleChange('oldPassword')}>
+                    Password
                 </InputWithLabel>
                 <br />
-                <InputWithLabel value={creds.password} id="OldPassword" label="Password" type="password" handleChange={handleChange('password')}>
+{/*                 <InputWithLabel value={user.password} id="OldPassword" label="Password" type="password" handleChange={handleChange('password')}>
                     New password
-                </InputWithLabel>
+                </InputWithLabel> */}
                 <br/> 
-                {creds.error &&
+                {user.error &&
                     <InvalidSubmit>
                         <Exclamation/>
-                        The old password is incorrect
+                        The password is incorrect
                     </InvalidSubmit>
                 }
             </SectionFieldStyle>
@@ -99,7 +144,8 @@ const Profile = ({uid, tasks, usuario, task, state, deleteUserAction,id}) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        deleteUserAction: (id) => dispatch(deleteUserAction(id))
+        deleteUserAction: (id) => dispatch(deleteUserAction(id)),
+        editUser: (user) => dispatch(editUser(user))
     }
 }
 
@@ -115,4 +161,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Profile)
+export default connect(mapStateToProps,mapDispatchToProps)(Edit)
