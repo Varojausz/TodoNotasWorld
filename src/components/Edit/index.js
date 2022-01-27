@@ -44,13 +44,14 @@ const Edit = ({uid, tasks, usuario, task, state, deleteUserAction,id, editUser})
         oldPassword: '',
         name: state.user.name,
         id: state.user.id ? state.user.id : '',
-        error: ''
+        date: state.user.date ? state.user.date : '',
+        error: '',
+        request: false
     })
 
     const [images, setImages] = useState({
         src: '',
-        image: '',
-        request: false
+        image: ''
     })
 
     const handleChange = name => event => {
@@ -84,7 +85,7 @@ const Edit = ({uid, tasks, usuario, task, state, deleteUserAction,id, editUser})
 
     useEffect(() => {
         if(user.request === true) {
-          setImages({...images, request: false})
+          setUser({...user, request: false})
           editUser(user)
         }
       },[user.data])
