@@ -1,11 +1,11 @@
 export const addUser = user => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
-/*         const authorId = getState().firebase.auth.uid; */
+        const authId = getState().firebase.auth.uid;
         firestore.collection('users')
+        user.authId = authId
         .add({
             ...user,
-/*             authorId: authorId, */
             date: new Date()
         })
         .then(()=> {
@@ -25,7 +25,7 @@ export const addUser = user => {
 export const editUser = user => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
-        firestore.collection('users').doc(user.id)
+        firestore.collection('users').doc(user.storeId)
         .set(user)
         .then(()=> {
             dispatch({

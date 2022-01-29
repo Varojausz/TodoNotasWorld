@@ -29,7 +29,7 @@ const Edit = ({uid, tasks, usuario, task, state, deleteUserAction,id, editUser})
         },
         body: formData
       }).then((data) => data.json()).then((data) => {
-        setUser({...user, data: data.data.link, request: true, id: state.user.id, email: user.email})
+        setUser({...user, data: data.data.link, request: true, storeId: state.user.storeId, email: user.email})
       }) 
       .catch(error => {
         console.error(error);
@@ -43,7 +43,8 @@ const Edit = ({uid, tasks, usuario, task, state, deleteUserAction,id, editUser})
         password: '',
         oldPassword: '',
         name: state.user.name,
-        id: state.user.id ? state.user.id : '',
+        storeId: state.user.storeId ? state.user.storeId : '',
+        authId: state.user.authId ? state.user.authId : '',
         date: state.user.date ? state.user.date : '',
         error: '',
         request: false

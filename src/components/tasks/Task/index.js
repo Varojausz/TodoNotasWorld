@@ -14,7 +14,9 @@ import {removeTask, toggleFav} from '../../../store/actions/taskActions'
 import moment from 'moment'
 
 
-function Post ({task, removeTask, toggleFav, uid}){
+function Post ({task, removeTask, toggleFav, uid, state}){
+
+  const [image, setImage] = useState('')
   const handleRemove = (task) => {
     removeTask(task)
   }
@@ -22,14 +24,29 @@ function Post ({task, removeTask, toggleFav, uid}){
       toggleFav(task)
   }
 
-/*   function toDateTime(secs) {
-    let t = new Date(secs * 1000)
-    return t;
-} */
+
+function obtenerImagen(users,id){
+  for(let user of users) {
+    console.log('probando con', user)
+    if(user.id===id){
+      return user.data
+    }
+  }
+}
+
+useEffect(() => {
+  const users = state.firestore.ordered.users;
+  const id = task.storeId;
+  const data = obtenerImagen(users,id)
+  console.log(data)
+  setImage(data)
+  
+},[])
+
 
 
   const heartMarkup = task.favorite ? <Heart/> : <Empty_heart/>
-  const deleteMarkup = (task.authorId === uid || task.authorId === 'Anónimo' || uid === 'CXzaSXQAyhMVvguGMPk0Kl1Usdd2') ? 
+  const deleteMarkup = (task.authId === state.user.authId || task.authId === 'Anónimo' || state.user.authId === 'Y9llS1eWmQQh3lXoAYbVsdHMJNt2') ? 
   <button type="button">
     <span className="label"><Bin onClick={() => handleRemove(task)}/></span>
     <span className="root"></span>
@@ -39,8 +56,7 @@ function Post ({task, removeTask, toggleFav, uid}){
 
 
   const photoURL = 'https://i.imgur.com/5H0KCsy.png'
-  console.log(task.data)
-  console.log(task.data !=='')
+
   
   // useEffect(() => {
   //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
@@ -59,7 +75,7 @@ function Post ({task, removeTask, toggleFav, uid}){
 
           <div className="avatar">
             <div className="MuiAvatar-root MuiAvatar-circular">
-              <img src={photoURL} className="MuiAvatar-img"/>
+              <img src={image ? image : photoURL} className="MuiAvatar-img"/>
             </div>
           </div>
 
@@ -129,7 +145,8 @@ const mapDispatchToProps = dispatch => {
 }
 const mapStateToProps = state => {
   return {
-    uid: state.firebase.auth.uid
+    uid: state.firebase.auth.uid,
+    state: state
   }
 }
 

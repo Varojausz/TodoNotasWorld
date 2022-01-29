@@ -1,18 +1,30 @@
-
+let ownId = ''
 export const addTask = task => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
-        const authorId = getState().firebase.auth.uid;
+        let authId = getState().firebase.auth.uid;
+        authId = authId ? authId : 'Anónimo';
+        const date = Date.now();
+        let storeId = getState().user.storeId
+        storeId = storeId ? storeId : 'Anónimo'
+        task.authId = authId;
+        task.storeId = storeId;
+        task.date = date;
+
         console.log(getState())
         console.log(task)
         firestore.collection('tasks')
         .add({
             ...task,
             favorite: false,
-            authorId: authorId!==undefined?authorId:'Anónimo',
-            date: Date.now()
+        }).then((data) => {
+            ownId = data.id
+            console.log(ownId, data.id)
+            firestore.collection('tasks').doc(data.id)
+            .set({...task, ownId: ownId})
         })
         .then(()=> {
+            task.ownId = ownId;
             dispatch({
                 type: "ADD_TASK",
                 payload: task
@@ -29,7 +41,7 @@ export const addTask = task => {
 export const removeTask = task => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
-        firestore.collection('tasks').doc(task.id).delete()
+        firestore.collection('tasks').doc(task.ownId).delete()
         .then(()=> {
             dispatch({
                 type: "REMOVE_TASK"
@@ -47,7 +59,7 @@ export const toggleFav = task => {
     return (dispatch,getState, {getFirebase})=> {
         const firestore = getFirebase().firestore()
         const favstatus = !task.favorite
-        firestore.collection('tasks').doc(task.id).update({
+        firestore.collection('tasks').doc(task.storeId).update({
             favorite: favstatus
         })
         .then(()=> {

@@ -13,7 +13,7 @@ import { memo } from 'react';
 
 
 
-function NewPost ({props, addTask, uid, usuario, task}){
+function NewPost ({props, addTask, uid, usuario, task, state}){
   const [images, setImages] = useState({
     src: '',
     image: '',
@@ -62,6 +62,7 @@ function NewPost ({props, addTask, uid, usuario, task}){
 
 
 
+
   
 
   const [focus, handleFocus, handleFocusOut, hover, handleHover, handleHoverOut] = useFocusHover();
@@ -94,13 +95,20 @@ function NewPost ({props, addTask, uid, usuario, task}){
   }
   /* const photoURL = values.user._id ?'/api/users/photo/'+ values.user._id : '/api/users/defaultphoto' */
   const photoURL = 'https://i.imgur.com/5H0KCsy.png'
+
+
+  console.log(state.firebase.auth.uid ? (state.user.data ? state.user.data : photoURL) : photoURL)
+  console.log(state.firebase.auth.uid )
+  console.log( state.user.data ? state.user.data : photoURL )
+
+  
     return (
       <Post>
         <PostForm>
           <FormUser>
             <div className="avatar">
               <div className="MuiAvatar-root MuiAvatar-circular">
-                <img src={photoURL}/>
+                <img src={state.firebase.auth.uid ? (state.user.data ? state.user.data : photoURL) : photoURL}/>
               </div>
             </div>
             <div className="content">
@@ -150,7 +158,8 @@ const mapStateToProps = state => {
   return {
     uid: state.firebase.auth.uid,
     usuario: state.auth,
-    task: state.task
+    task: state.task,
+    state: state
   }
 }
 

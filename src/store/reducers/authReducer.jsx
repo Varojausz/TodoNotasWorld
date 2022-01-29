@@ -44,7 +44,7 @@ const authReducer = (state = {}, action) => {
                 email: action.payload.email,
                 password: action.payload.password,
                 name: action.payload.name,
-                id: action.payload.id
+                storeId: action.payload.storeId
             }
 
         default: return state

@@ -36,7 +36,7 @@ function Signin(props) {
       pathname: '/'
     }
   }
-  if (props.uid) {
+  if (props.auth.email) {
       return (<Redirect to={from}/>)
   }
 

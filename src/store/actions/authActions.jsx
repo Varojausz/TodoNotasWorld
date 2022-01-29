@@ -26,7 +26,7 @@ export const signIn = creds => {
             const uid = getState().firebase.auth.uid
             const users = getState().firestore.ordered.users
             user = obtenerUsuario(users,uid)
-            creds = {...creds, name: user.name, id: user.id}
+            creds = {...creds, name: user.name, storeId: user.storeId}
             /* creds.name = user.name */
             console.log(creds)
             console.log(user)
@@ -47,13 +47,14 @@ export const signIn = creds => {
     }
 }
 
-let userId = {}
+let authId = {}
+let storeId = {}
 export const signUp = (creds) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
         firebase.auth().createUserWithEmailAndPassword(creds.email, creds.password)
         .then((data) => {
-            userId = {...data}
+            authId = {...data}
             dispatch({type: "SIGN_UP", payload: creds});
         }).then(() => {
             const firestore = getFirebase().firestore()
@@ -62,15 +63,19 @@ export const signUp = (creds) => {
             .add({
                 ...creds,
                 photo: "",
-                userId: userId.user.uid,
+                authId: authId.user.uid,
                 date: new Date()
+            }).then((data) => {
+                storeId = data.id
+                firestore.collection('users').doc(data.id)
+                .set({...creds, photo: "", authId: authId.user.uid, date: new Date(), storeId: storeId})
             })
-            .then((data)=> {
-                console.log(data)
+            .then(()=> {
+                console.log(storeId)
                 creds.password = null
                 dispatch({
                     type: "ADD_USER",
-                    payload: {...creds, photo: "", userId: userId.user.uid, date: new Date(), id: data.id}
+                    payload: {...creds, photo: "", authId: authId.user.uid, date: new Date(), storeId: storeId}
                 })
             })
         })
@@ -90,9 +95,13 @@ export const signOut = () => {
         .then(() => {
             console.log('adios :D')
             dispatch({type: "SIGN_OUT"});
+        }).then(() => {
+            console.log('user out')
+            dispatch({type: "USER_OUT"});
         })
     }
 }
+
 
 
 
