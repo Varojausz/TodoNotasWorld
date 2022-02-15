@@ -1,3 +1,4 @@
+import {toast} from 'react-toastify'
 
 const userReducer = (state = {}, action) => {
     switch(action.type) {
@@ -12,6 +13,7 @@ const userReducer = (state = {}, action) => {
             state.authId = action.payload.authId
             state.storeId = action.payload.storeId
             console.log(action.payload)
+            toast.success("Profile image changed")
             return state
         case 'DELETE_USER':
             return {

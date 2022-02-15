@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 /* import PropTypes from 'prop-types' */
 import {Link} from 'react-router-dom'
-/* import Comments from '../Comments' */
+//import CommentList from '../CommentList'
 
 /* import Chat from '!svg-react-loader?name=Icon!./../../assets/images/Chat.svg' */
 import { ReactComponent as Bin } from '../../../assets/images/Bin.svg'; 
@@ -9,14 +9,18 @@ import { ReactComponent as Heart } from '../../../assets/images/Heart.svg';
 import { ReactComponent as Empty_heart } from '../../../assets/images/Empty_heart.svg'; 
 import { ReactComponent as Chat } from '../../../assets/images/Chat.svg'; 
 import {PostContainer, PostHeader, PostContent, PostActions, PostComments} from './styles'
+import { useFirestoreConnect } from 'react-redux-firebase'
 import {connect} from 'react-redux'
-import {removeTask, toggleFav} from '../../../store/actions/taskActions'
+import {removeTask, toggleFav, addComment} from '../../../store/actions/taskActions'
 import moment from 'moment'
+import Comments from '../post/Comment'
+import CommentList from '../post/CommentList'
 
 
-function Post ({task, removeTask, toggleFav, uid, state}){
+function Post ({task, removeTask, toggleFav, uid, state, firestore}){
 
   const [image, setImage] = useState('')
+  const [values, setValues] = useState({})
   const handleRemove = (task) => {
     removeTask(task)
   }
@@ -24,10 +28,16 @@ function Post ({task, removeTask, toggleFav, uid, state}){
       toggleFav(task)
   }
 
+  useFirestoreConnect([ { collection: 'tasks', doc: task.id, subcollections: [{ collection: `comments` }], storeAs: `comments${task.id}`, orderBy:['date','desc'] } ])
+
+    useEffect(() => {
+      setValues({storedComments: firestore[`comments${task.id}`]})
+      console.log(firestore[`comments${task.id}`])
+    },[state])
 
 function obtenerImagen(users,id){
   for(let user of users) {
-    console.log('probando con', user)
+    //console.log('probando con', user)
     if(user.id===id){
       return user.data
     }
@@ -37,8 +47,8 @@ function obtenerImagen(users,id){
 useEffect(() => {
   const users = state.firestore.ordered.users;
   const id = task.storeId;
+  console.log(task.id, values.storedComments);
   const data = obtenerImagen(users,id)
-  console.log(data)
   setImage(data)
   
 },[])
@@ -121,12 +131,13 @@ useEffect(() => {
             </span>
             <span className="root"></span>
           </button> 
-          <span>{0}</span>
+          <span>{values.storedComments ? values.storedComments.length : ''}</span>
         </PostActions>
 
         <hr className="MuiDivider-root"/>
 
-        {/* <Comments postId={props.post._id} comments={values.comments} updateComments={updateComments}/> */}
+        <CommentList storedComments={values.storedComments && values.storedComments.length > 0 ? [...values.storedComments].reverse() : values.storedComments}  task={task}/>
+        {/* <CommentList comments={task.comments} task={task} updateComments={updateComments}/> */}
       </PostContainer>
     )
   
@@ -145,6 +156,7 @@ const mapDispatchToProps = dispatch => {
 }
 const mapStateToProps = state => {
   return {
+    firestore: state.firestore.ordered,
     uid: state.firebase.auth.uid,
     state: state
   }

@@ -46,7 +46,7 @@ const Profile = ({uid, tasks, usuario, task, state, deleteUserAction, id}) => {
                 <HeaderProfile>
                     <HeaderAvatar>
                         <div className='circular'>
-                            <img src={photoURL} alt="" />
+                            <img src={state.firebase.auth.uid ? (state.user.data ? state.user.data : photoURL) : photoURL} alt="" />
                         </div>
                     </HeaderAvatar>
 

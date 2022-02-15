@@ -51,7 +51,7 @@ function Signin(props) {
                         Email
                     </InputWithLabel>
                     <br/>
-                    <InputWithLabel value={creds.password} id="password" label="Password" type="password" handleChange={handleChange('password')}>
+                    <InputWithLabel minLength={6} value={creds.password} id="password" label="Password" type="password" handleChange={handleChange('password')}>
                         Password
                     </InputWithLabel>
                     <br/> 

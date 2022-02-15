@@ -8,7 +8,7 @@ export const PostContainer = styled.div`
     overflow: hidden;
     margin: auto;
     max-width: 600px;
-    margin-bottom: 24px;
+    margin-bottom: 48px;
     background-color: rgba(0, 0, 0, 0.06);
 
     hr {
@@ -167,7 +167,7 @@ export const PostContent = styled.section`
 
             img {
                 text-align: center;
-                height: 200px;
+                height: 300px;
             }
         }
 `
