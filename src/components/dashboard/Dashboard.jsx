@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 /* import AddTask from '../tasks/AddTask' */
 import NewPost from '../tasks/post/NewPost'
-import LoggedNewPost from '../tasks/post/LoggedNewPost'
 import { connect, useSelector } from 'react-redux'
 import { useFirestoreConnect, isLoaded } from 'react-redux-firebase'
 import TaskList from '../tasks/TaskList'

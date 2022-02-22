@@ -39,12 +39,6 @@ const Menu = withRouter(({history, uid, signOut}) => {
                     </Link>
                     <button className="ToggleButton" onClick={() => setToggle(!toggle)}><Toggle_icon/></button>
                     <ToggleContent toggle={toggle}>
-                        <Link to="/favorites">
-                            <MenuButtonStyle tabIndex={0} type="button" color={isActive(history, "/favorites")}>
-                                <span className="Button-label">Favorites</span>
-                                <span className="root" />
-                            </MenuButtonStyle>
-                        </Link>
                         {
                             uid ?  (
                                 <span>

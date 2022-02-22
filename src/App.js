@@ -4,7 +4,7 @@ import './App.css'
 import Signin from './components/Signin'
 import Signup from './components/Signup'
 import Dashboard from './components/dashboard/Dashboard'
-import Navbar from './components/layout/Navbar'
+
 
 import {Layout} from './components/Layouts'
 import Menu from './components/Menu'
@@ -12,10 +12,7 @@ import { ThemeProvider } from 'styled-components'
 import {ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import Favorites from './components/tasks/Favorites'
-import TaskDetail from './components/tasks/TaskDetail'
-import EditTask from './components/tasks/EditTask'
-import MisNotas from './components/tasks/MisNotas'
+
 import Profile from './components/Profile'
 import Edit from './components/Edit'
 
@@ -30,12 +27,9 @@ function App() {
         <Route path="/signin" component={Signin}/>
         <Route path="/signup" component={Signup}/>
         <Route exact path="/" component={Dashboard}/>
-        <Route exact path="/favorites" component={Favorites}/>
-        <Route exact path="/misnotas" component={MisNotas}/>
-        <Route exact path="/task/:id" component={TaskDetail}/>
         <Route exact path="/profile" component={Profile}/>
         <Route exact path="/edit" component={Edit}/>
-        <Route exact path="/edittask/:id" component={EditTask}/>
+        {/* <Route exact path="/edittask/:id" component={EditTask}/> */}
       </Switch>
     </Layout>
         

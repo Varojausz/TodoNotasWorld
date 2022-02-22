@@ -15,7 +15,7 @@ const Profile = ({uid, tasks, usuario, task, state, deleteUserAction, id}) => {
     function obtenerTasks(tasks,uid){
         let resultsArray = []
         for(let task of tasks) {
-            if(task.authorId === uid) {
+            if(task.authId === uid) {
                 resultsArray.push(task)
             }
         }
@@ -33,7 +33,7 @@ const Profile = ({uid, tasks, usuario, task, state, deleteUserAction, id}) => {
     /* useFirestoreConnect({collection: 'users', where:['date','==','desc'], storeAs: 'usuarioBuscado'}) */
     console.log(tasks)
     useEffect(() => {
-        setValues({...values, tasks: obtenerTasks(tasks, state.user.userId), loaded: true})
+        setValues({...values, tasks: obtenerTasks(tasks, uid), loaded: true})
         
     },[])
     useEffect(() => {

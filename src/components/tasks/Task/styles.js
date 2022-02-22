@@ -167,7 +167,7 @@ export const PostContent = styled.section`
 
             img {
                 text-align: center;
-                height: 300px;
+                height: 200px;
             }
         }
 `
