@@ -99,7 +99,7 @@ const Edit = ({uid, tasks, usuario, task, state, deleteUserAction,id, editUser})
 
                 <HeaderProfile name='HeaderProfile' padding={['4','4','16','16']} height='240px' width='100%' justify='center' margin={['0','0','0','0']}>
                     <HeaderAvatar name='HeaderAvatar' hover={hover} display='flex' justify='center' margin={['0','0','0','0']} onMouseLeave={handleHoverOut}>
-                    <input id="icon-button-file" onChange={handleChange('photo')} ref={inputRef} accept="image/*" className="makeStyles-input-38" id="icon-button-file" type="file"/>
+                    <input id="icon-button-file" onChange={handleChange('photo')} ref={inputRef} accept="image/*" className="makeStyles-input-38" type="file"/>
                         <label htmlFor="icon-button-file" className='circular' onMouseOver={handleHover} >
                             <img onMouseOver={handleHover} style={{position: 'absolute', width: '100%', height: '100%'}} src={images.src ? images.src : state.user.data} alt=""/>
                             <Camera onMouseOver={handleHover}/>
