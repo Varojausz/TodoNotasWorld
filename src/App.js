@@ -3,6 +3,8 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import './App.css'
 import Signin from './components/Signin'
 import Signup from './components/Signup'
+import Spotify from './components/Spotify'
+import Test from './components/Tests/Test'
 import Dashboard from './components/dashboard/Dashboard'
 
 
@@ -26,6 +28,8 @@ function App() {
       <Switch>
         <Route path="/signin" component={Signin}/>
         <Route path="/signup" component={Signup}/>
+        <Route path="/spotify" component={Spotify}/>
+        <Route path="/tests" component={Test}/>
         <Route exact path="/" component={Dashboard}/>
         <Route exact path="/profile" component={Profile}/>
         <Route exact path="/edit" component={Edit}/>

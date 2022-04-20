@@ -35,7 +35,6 @@ export const MenuStyle = styled.nav`
             width: 42px;
             flex-direction: column;
             justify-content: center;
-            height: 48px;
         }
 
         justify-content: space-between;
@@ -73,13 +72,13 @@ export const MenuHomeStyle = styled.button`
     overflow: visible;
     font-size: 1.5rem;
     text-align: center;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     border-radius: 50%;
     color: rgb(255, 255, 255);
 
     &:hover {
         text-decoration: none;
         background-color: rgba(0, 0, 0, 0.2);
+        transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     }
 
     div {
@@ -154,7 +153,7 @@ export const MenuButtonStyle = styled.button`
     font-size: 0.875rem;
     min-width: 64px;
     box-sizing: border-box;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    /* transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; */
     font-weight: 500;
     line-height: 1.75;
     border-radius: 4px;

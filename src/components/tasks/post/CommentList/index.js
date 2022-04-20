@@ -20,6 +20,7 @@ const CommentList = ({task, state, addComment, storedComments}) => {
 
     //useFirestoreConnect([ { collection: 'tasks', doc: task.id, subcollections: [{ collection: `/tasks/${task.id}/comments` }], storeAs: 'comments',orderBy:['date','desc'] } ])
 
+    
 
     const handleChange = event => {
       setComment({content: event.target.value, task: task})

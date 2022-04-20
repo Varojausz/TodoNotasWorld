@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import {FormStyle, SectionFieldStyle, SectionSubmitStyle, InvalidSubmit} from './styles'
 /* import Exclamation from '!svg-react-loader?name=Icon!./../../assets/images/Exclamation.svg' */
@@ -26,6 +26,10 @@ function Signin(props) {
   const handleChangePassword = event => {
     setValues({ ...values, password: event.target.value })
   } */
+
+  useEffect(() => {
+    console.log(props)
+  })
 
   function handleSubmit (e) {
       e.preventDefault()
