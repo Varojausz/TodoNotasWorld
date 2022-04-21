@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { TestRadioDiv, TestContainerCounter, TestContainerOption } from './styles';
 
-const TestUnit = ({selectOptionHandler,option1,option2,option3,option4,answer,enunciado, index}) => {
+const TestUnit = ({selectOptionHandler,option1,option2,option3,option4,answer,enunciado, index, answered, submitted}) => {
 
     const [optionAnswer, setOptionAnswer] = useState("");
 
@@ -16,17 +16,20 @@ const TestUnit = ({selectOptionHandler,option1,option2,option3,option4,answer,en
         arrayOptions.map((item,index) => {
             if(item && arrayOptions.length >0 && item == answer) {
                 setOptionAnswer(arrayOptions[index]);
-                respuesta = arrayOptions[index];
             }
         })
-        return respuesta;
     }
 
     return (
         <div style={{display: 'flex', margin: "1rem 0"}}>
-            <TestContainerCounter className="counter">{index+1}</TestContainerCounter>
-            <TestContainerOption>
-                <div>{enunciado}</div>
+            <TestContainerCounter className="counter">
+            <header className="marco superior"></header>
+                <div>{index+1}</div>
+            <footer className="marco inferior"></footer>
+            </TestContainerCounter>
+            <TestContainerOption submitted={submitted} answered={answered}>
+                <header className="marco superior"></header>
+                <TestRadioDiv>{enunciado}</TestRadioDiv>
                 <TestRadioDiv>
                     <input onClick={(event)=>selectOptionHandler(event.target.value===optionAnswer,index)} type="radio" name={index} id="1" value={option1}/>
                     <label htmlFor="1">{option1}</label>
@@ -43,6 +46,7 @@ const TestUnit = ({selectOptionHandler,option1,option2,option3,option4,answer,en
                     <input onClick={(event)=>selectOptionHandler(event.target.value===optionAnswer,index)} type="radio" name={index} id="4" value={option4}/>
                     <label htmlFor="4">{option4}</label>
                 </TestRadioDiv> 
+                <footer className="marco inferior"></footer>
             </TestContainerOption>
         </div>
     )

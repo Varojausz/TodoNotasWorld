@@ -19,7 +19,7 @@ const TestRecount = ({table,recount,submitted}) => {
             {table.map((item,index) => {
                 return (
                    /*  <Recount submitted={submitted} answer={typeof(recount[index])!=='number' ? recount[index] : undefined} key={index} item={item}>{item}</Recount> */
-                    <Recount submitted={submitted} answer={recount[index]} key={index} item={item}>{item}</Recount>
+                    <Recount submitted={submitted} answered={recount[index]} key={index} item={item}>{item}</Recount>
                 )
                 
             })}
@@ -90,7 +90,7 @@ const Test = (props) => {
             <TestContainerGlobal>
             <TestRecount submitted={submitted} table={tableRecount} recount={arrayAnswers}></TestRecount>
             <TestContainer>
-                <TestList submitted={submitted} table={table} selectOptionHandler={selectOptionHandler}></TestList>
+                <TestList recount={arrayAnswers} submitted={submitted} table={table} selectOptionHandler={selectOptionHandler}></TestList>
             </TestContainer>
             </TestContainerGlobal>
             <div style={{display: "flex", justifyContent: "center"}}><button onClick={submit}>Submit</button></div>

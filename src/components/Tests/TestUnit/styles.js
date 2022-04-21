@@ -2,12 +2,33 @@ import styled from 'styled-components'
 
 export const TestContainerOption = styled.article`
     margin: 1rem;
-    padding: 2rem;
-    border: 2px solid black;
+    /* border: 4px solid black; */
+    box-shadow: 2px 2px 5px 2px;
     border-radius: 0.8rem;
     display: flex;
-    flex-grow: 1;
+    width: 90%;
     flex-direction: column;
+    justify-content: center;
+    background-color: ${props => props.submitted && (props.answered === 'true' ? 'lightgreen' : '#ff6347')};
+
+    .marco {
+        background-color: #3f4771;
+        height: 3rem;
+    }
+    .superior {
+        background-color: #3f4771;
+        height: 3rem;
+        margin-bottom: 1rem;
+        border-top-left-radius: 0.45rem;
+        border-top-right-radius: 0.45rem;
+    }
+    .inferior {
+        background-color: #3f4771;
+        height: 3rem;
+        margin-top: 1rem;
+        border-bottom-left-radius: 0.45rem;
+        border-bottom-right-radius: 0.45rem;
+    }
     
 
     input {
@@ -16,16 +37,39 @@ export const TestContainerOption = styled.article`
 `
 export const TestRadioDiv = styled.div`
     padding: 0.5rem;
+    padding-left: 2rem;
 `
 
 export const TestContainerCounter = styled.article`
     display: flex;
-    flex-grow: 0.2;
-    justify-content: center;
+    flex-direction: column;
+    width: 10%;
+    justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
-    margin: 0 0.5rem;
-    border: 3px solid black;
+    margin: 1rem;
+/*     padding: 0 0.5rem; */
+    /* border: 2px solid black; */
     border-radius: 0.8rem;
     font-weight: 800;
+    box-shadow: 2px 2px 5px 2px;
+
+    .marco {
+        background-color: #3f4771;
+        height: 3rem;
+        width: 100%;
+    }
+    .superior {
+        background-color: #3f4771;
+        height: 3rem;
+        margin-bottom: 1rem;
+        border-top-left-radius: 0.45rem;
+        border-top-right-radius: 0.45rem;
+    }
+    .inferior {
+        background-color: #3f4771;
+        height: 3rem;
+        margin-top: 1rem;
+        border-bottom-left-radius: 0.45rem;
+        border-bottom-right-radius: 0.45rem;
+    }
 `

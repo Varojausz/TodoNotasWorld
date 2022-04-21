@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import { TestRadioDiv, TestCounterDiv, TestContainerSection } from './styles';
 import TestUnit from '../TestUnit';
 
-const TestList = ({selectOptionHandler, table,submitted}) => {
+const TestList = ({selectOptionHandler, table,submitted, recount}) => {
     const tests = [
         {
             enunciado: "El conjunto de productos y servicios destinados a satisfacer las necesidades...",
@@ -105,9 +105,10 @@ const TestList = ({selectOptionHandler, table,submitted}) => {
 
 
 
+
     return (
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-            {table && table.map((test,index) => <TestUnit submitted={submitted} selectOptionHandler={selectOptionHandler} option1={test.option1} option2={test.option2} option3={test.option3} option4={test.option4} enunciado={test.enunciado} answer={test.answer} index={index} key={index}/>)}
+            {table && table.map((test,index) => <TestUnit submitted={submitted} selectOptionHandler={selectOptionHandler} option1={test.option1} option2={test.option2} option3={test.option3} option4={test.option4} enunciado={test.enunciado} answered={recount[index]} answer={test.answer} index={index} key={index}/>)}
         </div>
     )
 
