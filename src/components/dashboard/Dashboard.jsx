@@ -12,6 +12,9 @@ const Dashboard = (props) => {
 
     useFirestoreConnect({collection: 'tasks', orderBy:['date','desc']})
     useFirestoreConnect({collection: 'users', orderBy:['date','desc']})
+    useFirestoreConnect({collection: 'tests', orderBy:['enunciado','desc']});
+    
+
 
     useEffect(() => {
         setValues({tasks: props.tasks})

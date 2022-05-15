@@ -41,8 +41,20 @@ export const LayoutStyle = styled.div`
 
         .footer {
             background-color: #3f4771;
-            padding: 1rem;
+            padding: 0.5rem 1rem;
             margin-top: auto;
+            text-align: center;
+            color: white;
+            a {
+                color: white;
+                text-decoration: none;
+            }
+
+            svg {
+                max-width: 1.5rem;
+                max-height: 1.5rem;
+            }
+
         }
 
 `

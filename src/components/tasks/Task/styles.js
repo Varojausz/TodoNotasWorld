@@ -7,7 +7,7 @@ export const PostContainer = styled.div`
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
     overflow: hidden;
     margin: auto;
-    max-width: 600px;
+    /* width: 600px; */
     margin-bottom: 48px;
     background-color: rgba(0, 0, 0, 0.06);
 
@@ -18,6 +18,7 @@ export const PostContainer = styled.div`
         flex-shrink: 0;
         background-color: rgba(0, 0, 0, 0.12);
     }
+
 `
 
 export const PostHeader = styled.section`
@@ -27,6 +28,14 @@ export const PostHeader = styled.section`
     padding-top: 8px;
     padding-bottom: 8px;
     background-color: #f2f5f4;
+    max-width: 100vw;
+    margin: auto;
+    width: 600px;
+
+    @media screen and (max-width:400px) {
+        width: 100%;
+        margin: none;
+    }
 
     .avatar {
         color: rgba(0, 0, 0, 0.87);
@@ -151,6 +160,14 @@ export const PostHeader = styled.section`
 export const PostContent = styled.section`
         padding: 16px 0px;
         background-color: white;
+        width: 600px;
+        max-width: 100vw;
+        margin: auto;
+
+        @media screen and (max-width:400px) {
+        width: 100%;
+        margin: none;
+        }
 
         p {
             font-size: 14px;
@@ -167,7 +184,11 @@ export const PostContent = styled.section`
 
             img {
                 text-align: center;
-                height: 200px;
+                /* height: 200px; */
+                /* max-height: 400px; */
+                height: auto;
+                width: 70%;
+                
             }
         }
 `
@@ -175,6 +196,15 @@ export const PostActions = styled.section`
     display: flex;
     padding: 8px;
     align-items: center;
+    /* max-width: 100vw; */
+    margin: auto;
+    width: 600px;
+    background-color: rgb(242, 245, 244);
+
+    @media screen and (max-width:400px) {
+        width: 100%;
+        margin: none;
+    }
 
     button {
         border: 0;

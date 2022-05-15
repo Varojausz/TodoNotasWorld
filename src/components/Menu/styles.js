@@ -27,6 +27,11 @@ export const MenuStyle = styled.nav`
         display: none;
         background-color: #3f4771;
         box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+        border: none;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+        border-radius: 4px;
 
         @media screen and (max-width: 700px) {
             position: absolute;

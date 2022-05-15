@@ -5,6 +5,9 @@ export const Post = styled.div`
     background-color: #efefef;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: 400;
+    max-width: 100vw;
+    margin: auto;
+    width: 600px;
 `
 export const PostForm = styled.form`
 
@@ -13,10 +16,13 @@ export const PostForm = styled.form`
     border-radius: 4px;
     overflow: hidden;
     margin: auto;
-    max-width: 600px;
+    max-width: 100%;
     box-shadow: none;
     margin-bottom: 24px;
     background-color: rgba(65, 150, 136, 0.09);
+
+    margin: auto;
+    width: 600px;
 
 `
 
@@ -27,6 +33,14 @@ export const FormUser = styled.section`
     align-items: center;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    max-width: 100vw;
+    margin: auto;
+    width: 600px;
+
+    @media screen and (max-width:400px) {
+        width: 300px;
+    }
 
     .avatar {
         color: rgba(0, 0, 0, 0.87);
@@ -69,6 +83,7 @@ export const FormUser = styled.section`
         color: rgba(0, 0, 0, 0.87);
         flex: 1 1 auto;
 
+
         span {
             color: rgba(0, 0, 0, 0.87);
             margin: 0;
@@ -85,6 +100,14 @@ export const FormField = styled.section`
     padding-top: 0;
     padding-bottom: 0;
     background-color: white;
+
+    max-width: 100vw;
+    margin: auto;
+    width: 600px;
+
+    @media screen and (max-width:400px) {
+        width: 300px;
+    }
 
     article {
         color: rgba(0, 0, 0, 0.87);
@@ -214,6 +237,14 @@ export const FormSubmit = styled.section`
     display: flex;
     padding: 8px;
     align-items: center;
+
+    max-width: 100vw;
+    margin: auto;
+    width: 600px;
+
+    @media screen and (max-width:400px) {
+        width: 300px;
+    }
 
     button {
         border: 0;

@@ -113,7 +113,7 @@ useEffect(() => {
         <hr className="MuiDivider-root"/>
 
         <PostActions>
-        { task.favorite ?
+{/*         { task.favorite ?
           <button onClick={toggleFavHandler} className="unliked" type="button" aria-label="Unlike">
             <span className="label">
             {heartMarkup}
@@ -124,7 +124,7 @@ useEffect(() => {
               {heartMarkup}
             </span>
           </button>  }
-          <span>{task.favorite ? 1 : 0}</span>
+          <span>{task.favorite ? 1 : 0}</span> */}
           <button type="button" aria-label="Comment">
             <span className="label">
               <Chat/>

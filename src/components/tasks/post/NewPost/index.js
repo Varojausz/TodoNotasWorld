@@ -119,7 +119,7 @@ function NewPost ({props, addTask, uid, usuario, task, state}){
           <FormField focus={focus} hover={hover}>
             <article className="MuiFormControl-root MuiTextField-root makeStyles-textField-39 MuiFormControl-marginNormal">
               <img height={images.image ? '200px' : '0px'} src={images.src} alt="" />
-              <div onMouseOut={handleHoverOut} onMouseOver={handleHover} onFocus={handleFocus} onBlur={handleFocusOut} className="input" className="textarea-container">
+              <div onMouseOut={handleHoverOut} onMouseOver={handleHover} onFocus={handleFocus} onBlur={handleFocusOut} className="input textarea-container">
                 <textarea aria-invalid="false" onChange={handleChange('content')} placeholder="Share your thoughts ..." rows="3" className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"></textarea>
               </div>
             </article>

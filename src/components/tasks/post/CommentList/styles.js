@@ -1,6 +1,13 @@
 import styled from 'styled-components'
 
 export const CommentContainer = styled.section`
+    margin: auto;
+    width: 600px;
+
+    @media screen and (max-width:400px) {
+        width: 100%;
+        margin: none;
+    }
     .comment-field {
         display: flex;
         padding: 16px;

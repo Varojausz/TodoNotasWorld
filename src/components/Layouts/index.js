@@ -1,6 +1,7 @@
 import {LayoutStyle, SidebarStyle} from './styles'
 import Menu from '../Menu'
 import React,{useState} from 'react';
+import { ReactComponent as Linkedin } from './../../assets/images/linkedin-brands.svg'; 
 
 const Sidebar = (props) => {
     return (
@@ -19,7 +20,11 @@ export const Layout = ({headerHeight, children, sidebar1, sidebar2}) => {
                 <div className="content">{children}</div>
                 <Sidebar sidebar2={sidebar2}/>
             </div>
-            <div className="footer"></div>
+            <section className="footer">
+            <div><h4>Developed by Álvaro Ruiz Montaner</h4></div>
+            <div><Linkedin/> <a target="_blank" href="https://www.linkedin.com/in/%C3%A1lvaro-ruiz-montaner-221a2b206/">https://www.linkedin.com/in/%C3%A1lvaro-ruiz-montaner-221a2b206/</a></div>
+            </section>
+
         </LayoutStyle>
     )
 }

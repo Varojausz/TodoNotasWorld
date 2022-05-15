@@ -13,6 +13,12 @@ export const StyledList = styled.div`
     gap: 5px;
     grid-auto-rows: auto; */
     width: 600px;
+    max-width: 100vw;
+    margin: auto;
+
+    @media screen and (max-width:400px) {
+    width: 300px;
+    }
     
 
     div {
