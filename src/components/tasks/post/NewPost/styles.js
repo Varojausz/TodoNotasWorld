@@ -106,7 +106,17 @@ export const FormField = styled.section`
     width: 600px;
 
     @media screen and (max-width:400px) {
-        width: 300px;
+        width: 100%;
+        margin: none;
+    }
+
+    img {
+        width: 70%;
+        height: 100%;
+        margin: auto;
+    }
+    div.input {
+        margin-top: 1rem;
     }
 
     article {

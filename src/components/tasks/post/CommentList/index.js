@@ -11,6 +11,8 @@ import useFocusHover from '../../../../assets/CustomHooks/useFocusHover'
 
 const CommentList = ({task, state, addComment, storedComments}) => {
 
+
+
     const [focus, handleFocus, handleFocusOut, hover, handleHover, handleHoverOut] = useFocusHover();
 
     const [comment, setComment] = useState({
@@ -19,7 +21,23 @@ const CommentList = ({task, state, addComment, storedComments}) => {
     })
 
     //useFirestoreConnect([ { collection: 'tasks', doc: task.id, subcollections: [{ collection: `/tasks/${task.id}/comments` }], storeAs: 'comments',orderBy:['date','desc'] } ])
+    
+    const [imagen,setImagen] = useState('')
 
+    function obtenerImagenPerfil (id, users) {
+      for (let user of users) {
+        if(user.storeId === id) {
+          //console.log(user.storeId, id)
+          //console.log(user.data)
+          return user.data
+        }
+      }
+    }
+    console.log(obtenerImagenPerfil(state.user.storeId, state.firestore.ordered.users))
+  
+    useEffect(() => {
+      setImagen(obtenerImagenPerfil(state.user.storeId, state.firestore.ordered.users))
+    },[])
     
 
     const handleChange = event => {
@@ -42,7 +60,7 @@ const CommentList = ({task, state, addComment, storedComments}) => {
             <article className="comment-field">
               <div className="avatar">
                 <div className="MuiAvatar-root MuiAvatar-circular makeStyles-smallAvatar-16">
-                  <img src={state.firebase.auth.uid ? (state.user.data ? state.user.data : photoURL) : photoURL} className="MuiAvatar-img"/>
+                  <img src={imagen ? imagen : photoURL} className="MuiAvatar-img"/>
                 </div>
               </div>
       

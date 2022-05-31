@@ -12,6 +12,25 @@ import { deleteUserAction } from '../../store/actions/authActions'
 
 const Profile = ({uid, tasks, usuario, task, state, deleteUserAction, id}) => {
 
+    const [imagen,setImagen] = useState('')
+
+    function obtenerImagenPerfil (id, users) {
+      for (let user of users) {
+        if(user.storeId === id) {
+          //console.log(user.storeId, id)
+          //console.log(user.data)
+          return user.data
+        }
+      }
+    }
+    console.log(obtenerImagenPerfil(state.user.storeId, state.firestore.ordered.users))
+  
+    useEffect(() => {
+      setImagen(obtenerImagenPerfil(state.user.storeId, state.firestore.ordered.users))
+    },[])
+
+
+    // Esta funcion obtiene los tasks publicados por el usuario logeado para mostrarlos en su profile
     function obtenerTasks(tasks,uid){
         let resultsArray = []
         for(let task of tasks) {
@@ -46,7 +65,7 @@ const Profile = ({uid, tasks, usuario, task, state, deleteUserAction, id}) => {
                 <HeaderProfile>
                     <HeaderAvatar>
                         <div className='circular'>
-                            <img src={state.firebase.auth.uid ? (state.user.data ? state.user.data : photoURL) : photoURL} alt="" />
+                            <img src={imagen ? imagen : photoURL} alt="" />
                         </div>
                     </HeaderAvatar>
 

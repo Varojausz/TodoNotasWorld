@@ -26,6 +26,25 @@ function NewPost ({props, addTask, uid, usuario, task, state}){
     request: false,
     data: ''
   })
+
+  const [imagen,setImagen] = useState('')
+
+  function obtenerImagenPerfil (id, users) {
+    for (let user of users) {
+      if(user.storeId === id) {
+        //console.log(user.storeId, id)
+        //console.log(user.data)
+        return user.data
+      }
+    }
+  }
+  console.log(obtenerImagenPerfil(state.user.storeId, state.firestore.ordered.users))
+
+  useEffect(() => {
+    setImagen(obtenerImagenPerfil(state.user.storeId, state.firestore.ordered.users))
+  },[])
+
+
   const inputRef = useRef()
 
   const fetching = () => {
@@ -78,6 +97,7 @@ function NewPost ({props, addTask, uid, usuario, task, state}){
         addTask(values)
       }
       console.log(values)
+      setImages({image: ''})
       document.querySelector('form').reset()
   }
   const handleChange = name => event => {
@@ -108,7 +128,7 @@ function NewPost ({props, addTask, uid, usuario, task, state}){
           <FormUser>
             <div className="avatar">
               <div className="MuiAvatar-root MuiAvatar-circular">
-                <img src={state.firebase.auth.uid ? (state.user.data ? state.user.data : photoURL) : photoURL}/>
+                <img src={imagen ? imagen : photoURL}/>
               </div>
             </div>
             <div className="content">
@@ -118,7 +138,7 @@ function NewPost ({props, addTask, uid, usuario, task, state}){
 
           <FormField focus={focus} hover={hover}>
             <article className="MuiFormControl-root MuiTextField-root makeStyles-textField-39 MuiFormControl-marginNormal">
-              <img height={images.image ? '200px' : '0px'} src={images.src} alt="" />
+              {images.image && <img src={images.src} alt="" />}
               <div onMouseOut={handleHoverOut} onMouseOver={handleHover} onFocus={handleFocus} onBlur={handleFocusOut} className="input textarea-container">
                 <textarea aria-invalid="false" onChange={handleChange('content')} placeholder="Share your thoughts ..." rows="3" className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"></textarea>
               </div>
